@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+  <!-- navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#0287d4 !important;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/" style="color: rgb(255, 255, 255); letter-spacing: 1px;">ADMIN DASHBOARD</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgb(255, 255, 255);">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" style="color: rgb(255, 255, 255);">Pricing</a>
+          </li>
+
+          <li class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="username" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" style="color: rgb(255, 255, 255); vertical-align: top;">
+              <span class="material-icons" style="vertical-align: -0.5pc;">
+                person_pin
+              </span>
+              username
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+
+              <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#user-settings"><span
+                    class="material-icons" style="vertical-align: bottom;">
+                    settings
+                  </span>Settings</a></li>
+
+              <li><a class="dropdown-item" href="
+                logout"><span class="material-icons" style="vertical-align: bottom;">
+                    power_settings_new
+                  </span>Logout</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- sidebar -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="sidebar">
+        <ul class="nav nav-sidebar">
+          <div class="sidebar-logo">
+            <!-- Example single danger button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <span class="material-icons" style="vertical-align: bottom;">
+                  add
+                </span>New
+              </button>
+
+              <div class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-doctor-modal">Add Doctor</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Other">Other</a>
+                </li>
+              </div>
+            </div>
+          </div>
+
+          <a href="javascript:viewDoctors()" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                calendar_view_day
+              </span>View doctors
+            </div>
+          </a>
+
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                people
+              </span>View customers
+            </div>
+          </a>
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                calendar_today
+              </span>View appointments
+            </div>
+          </a>
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                feedback
+              </span>View feedback
+            </div>
+          </a>
+
+          <a href="javascript:editDetails()" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                calendar_view_day
+              </span>Edit details
+            </div>
+          </a>
+
+        </ul>
+      </div>
+
+      <div class="col-sm-12 main">
+        <div class="row">
+          <h3 class="page-header" style="cursor: pointer;" onclick="viewDoctors()"><span class="material-icons"
+              style="vertical-align: bottom; font-size: 25px;">
+              person
+            </span>View doctors</h3>
+          <table class="table table-striped table-hover" style="font-size: smaller;">
+            <div id="system-msg" role="alert" disabled>
+
+            </div>
+            <thead id="col-names">
+
+            </thead>
+            <tbody id="current-details">
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal for to add doctor -->
+  <div class="modal" id="add-doctor-modal" tabindex="-1" role="dialog" aria-labelledby="add-doctor" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">New Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="add-doctor-msg" role="alert" disabled>
+
+          </div>
+
+          <form action="#" id="add-doctor">
+
+            <div class="form-group">
+              <input type="text" placeholder="Enter first name" name="firstName" id="firstName"
+                class="form-control form-control-lg" autocomplete="off" required />
+            </div>
+
+            <div class="form-group">
+              <input type="text" placeholder="Enter last name" name="lastName" id="lastName"
+                class="form-control form-control-lg" autocomplete="off" required />
+            </div>
+
+            <div class="form-group">
+              <select class="form-control form-control-lg" name="qualification" id="qualification">
+                <option selected>Choose qualification</option>
+                <option>education - 1</option>
+                <option>education - 2</option>
+                <option>education - 3</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <select class="form-control form-control-lg" name="specialization" id="specialization">
+                <option selected>Choose specialization</option>
+                <option>specialization - 1</option>
+                <option>specialization - 2</option>
+                <option>specialization - 3</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <input type="text" placeholder="Enter Email" name="email" id="email" class="form-control form-control-lg"
+                autocomplete="off" required />
+            </div>
+
+            <div class="form-group">
+              <label>Gender </label>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="gender" value="Male"> Male
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="gender" value="Female"> Female
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-group">
+                <input type="tel" name="phoneNo" id="phoneNo" class="form-control form-control-lg" maxlength="14"
+                  data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers"
+                  data-fv-phone-country11="IN" data-fv-notempty-message="This field cannot be left blank."
+                  placeholder="Mobile No. " data-fv-field="data[User][mobile]" autocomplete="off" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-group">
+                <label for="intro">Doctor's bio</label>
+                <textarea class="form-control" name="intro" id="intro" rows="3"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary form-control-lg" data-dismiss="modal">Close</button>
+                <button type="submit" name="doctorSubmit" class="btn form-control-lg btn-primary">SAVE
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal for to upate doctor details -->
+  <div class="modal" id="update-doctor-modal" tabindex="-1" role="dialog" aria-labelledby="update-doctor"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="text-align: center;">
+
+          <h5 class="modal-title  w-100" id="record-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span data-toggle="popover" id="record-id" title="RECORD ID" class="close material-icons"
+              style="color: rgb(255, 153, 0);">
+              info
+            </span>
+        </div>
+        <div class="modal-body">
+
+          <nav>
+
+            <ul class="nav nav-tabs" id="nav-tab">
+              <li class="active">
+                <a id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details"
+                  aria-selected="true">Details</a>
+              </li>
+              <li>
+                <a class="nav-item nav-link" id="nav-access-doctor-tab" data-toggle="tab" href="#nav-access-doctor"
+                  role="tab" aria-controls="nav-access-doctor" aria-selected="false">Status</a>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="tab-content" id="nav-tabContent">
+
+            <div class="tab-pane fade in active" id="nav-details">
+              <div id="show-doctor-details-msg" role="alert" disabled>
+
+              </div>
+              <form action="#" id="update-doctor">
+
+                <div class="form-group top10">
+                  <input type="text" placeholder="Enter first name" name="firstName-show" id="firstName-show"
+                    class="form-control form-control-lg" autocomplete="off" required />
+                </div>
+
+                <div class="form-group">
+                  <input type="text" placeholder="Enter last name" name="lastName-show" id="lastName-show"
+                    class="form-control form-control-lg" autocomplete="off" required />
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control form-control-lg" name="qualification-show" id="qualification-show">
+                    <option selected>Choose qualification</option>
+                    <option>education - 1</option>
+                    <option>education - 2</option>
+                    <option>education - 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <select class="form-control form-control-lg" name="specialization-show" id="specialization-show">
+                    <option selected>Choose specialization</option>
+                    <option>specialization - 1</option>
+                    <option>specialization - 2</option>
+                    <option>specialization - 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <input type="text" placeholder="Enter Email" name="email-show" id="email-show"
+                    class="form-control form-control-lg" autocomplete="off" required />
+                </div>
+
+                <div class="form-group">
+                  <label>Gender </label>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="radio" name="gender-show" id="m" value="Male"> Male
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="radio" name="gender-show" id="f" value="Female"> Female
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group">
+                    <input type="tel" name="phoneNo-show" id="phoneNo-show" class="form-control form-control-lg"
+                      maxlength="14" data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers"
+                      data-fv-phone-country11="IN" data-fv-notempty-message="This field cannot be left blank."
+                      placeholder="Mobile No. " data-fv-field="data[User][mobile]" autocomplete="off" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="intro">Doctor's bio</label>
+                    <textarea class="form-control" name="intro-show" id="intro-show" rows="3"></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary form-control-lg" data-dismiss="modal">Close</button>
+                    <button type="submit" id="doctorUpdate" class="btn form-control-lg btn-primary" disabled>SAVE
+                      CHANGES</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane" id="nav-access-doctor">
+              <div id="show-doctor-share-details-msg" role="alert" disabled>
+
+              </div>
+
+              <div class="custom-control custom-switch top7">
+                <input type="checkbox" class="custom-control-input" id="isAvailable">
+                <label class="custom-control-label" for="isAvailable">is available</label>
+              </div>
+
+              <h3 id="currTime"> Book a slot on </h3>
+
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                      wb_twilight
+                      </span>Morning</th>
+                    <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                      wb_sunny
+                      </span>Afternoon</th>
+                    <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                      nightlight_round
+                      
+                      </span>Evening</th>
+                    <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                      bedtime
+                      </span>Night</th>
+                  </tr>
+                </thead>
+                <tbody id="whoHasAccess">
+                  <tr>
+                    <td><div class="slot" id="10:00 AM">10:00 AM</div></td>
+                    <td><div class="slot" id="12:00 PM">12:00 PM</div></td>
+                    <td><div class="slot" id="06:00 PM">06:00 PM</div></td>
+                    <td><div class="slot" id="08:00 PM">08:00 PM</div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="slot" id="10:15 AM">10:15 AM</div></td>
+                    <td><div class="slot" id="12:15 PM">12:15 PM</div></td>
+                    <td><div class="slot" id="06:15 PM">06:15 PM</div></td>
+                    <td><div class="slot" id="08:15 PM">08:15 PM</div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="slot" id="10:30 AM">10:30 AM</div></td>
+                    <td><div class="slot" id="12:30 PM">12:30 PM</div></td>
+                    <td><div class="slot" id="06:30 PM">06:30 PM</div></td>
+                    <td><div class="slot" id="08:30 PM">08:30 PM</div></td>
+                  </tr>
+                  <tr>
+                    <td><div class="slot" id="10:45 AM">10:45 AM</div></td>
+                    <td><div class="slot" id="12:45 PM">12:45 PM</div></td>
+                    <td><div class="slot" id="10:45 PM">10:45 PM</div></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><div class="slot" id="11:00 AM">11:00 AM</div></td>
+                    <td><div class="slot" id="01:00 PM">01:00 PM</div></td>
+                    <td><div class="slot" id="07:00 PM">07:00 PM</div></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><div class="slot" id="11:15 AM">11:15 AM</div></td>
+                    <td><div class="slot" id="01:15 PM">01:15 PM</div></td>
+                    <td><div class="slot" id="07:15 PM">07:15 PM</div></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><div class="slot" id="11:30 AM">11:30 AM</div></td>
+                    <td><div class="slot" id="01:30 PM">01:30 PM</div></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary form-control-lg" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal for to show doctor details (read only)-->
+  <div class="modal" id="doctor-details-modal" tabindex="-1" role="dialog" aria-labelledby="d-details" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">DETAILS</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="finally-show-details">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Model for admin settings -->
+  <div class="modal" id="user-settings" tabindex="-1" role="dialog" aria-labelledby="user-settings" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="user-settings">Security</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body fs0">
+
+          <div class="custom-control custom-switch top7">
+            <input type="checkbox" class="custom-control-input" id="2fa" onclick="twoFAuth(this)">
+            <label class="custom-control-label" for="2fa">ACTIVATE TWO-FACTOR AUTHENTICATION</label>
+          </div>
+
+          <div class="custom-control custom-switch top7" data-toggle="popover"
+            data-content="This feature is not available for you.">
+            <input type="checkbox" class="custom-control-input" id="shortLogin" onclick="shortLogin(this)" disabled>
+            <label class="custom-control-label" for="shortLogin">ACTIVATE SHORTLOGIN</label>
+          </div>
+
+
+          <div class="custom-control custom-switch top7">
+            <input type="checkbox" class="custom-control-input" id="autoLogout" onclick="autoLogout(this)">
+            <label class="custom-control-label" for="autoLogout"></label>ACTIVATE AUTO-LOGOUT</br>Discontinue me
+            after <input type="number" name="select" value="0" id="auto-logout-counter" min="1" max="60" disabled>
+            <b>min</b> </label>
+          </div>
+          <button type="button" class="btn btn-danger btn-lg btn-block top30" style="font-size: 1.3em;"
+            data-toggle="modal" data-target="#change-pass-modal">CHANGE MASTER PASSWORD</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal for qrcode to show  -->
+
+  <div class="modal" id="qrcode-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="text-align: center;">Activate Two-Factor authentication</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="qrcode-box">
+            <img class="img-fluid" id="qrcode" src="img/dummyBarcode.jpg" alt="QR-Code" srcset="">
+            <form id="activate-2fa">
+              <div class="form-group d-flex justify-content-center top10">
+
+              </div>
+
+              <div class="row">
+                <div class="col-xs-offset-3 col-xs-6 col-md-offset-4 col-md-4">
+                  <input type="text" class="form-control" id="passcode" aria-describedby="passcodeHelp"
+                    placeholder="6-digit code" name="userToken" autocomplete="off">
+                </div>
+              </div>
+              <small id="passcodeHelp"></small>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">ACTIVATE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Model for to change password -->
+  <div class="modal" id="change-pass-modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profile">Change Password</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            <strong>Info!</strong> please set <i>Strong Password</i> a password that is reasonably difficult to guess by
+            someone in a short.
+          </div>
+          <div id="change-password-msg" role="alert" disabled>
+
+          </div>
+
+          <form class="form-inline" id="change-password-form" action="#">
+            <div class="form-group">
+              <label for="c-password">Password: </label>
+              <input type="password" id="c-password" class="form-control mx-sm-3" aria-describedby="passwordHelpInline"
+                required>
+            </div>
+            <div class="form-group top22">
+              <label for="c-confirm-password">Confirm Password: </label>
+              <input type="password" id="c-confirm-password" class="form-control mx-sm-3"
+                aria-describedby="passwordHelpInline" required>
+              <span style="color: rgb(194, 10, 10); font-size: 12px; visibility: hidden;" id="not-match-warn">
+                Mismatch
+              </span>
+            </div>
+            <button type="submit" class="btn btn-success btn-lg btn-block top30" id="change-pass-button"
+              style="font-size: 1.3em;">
+              CHANGE IT
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- messages Modal -->
+  <div class="modal fade bd-example-modal-sm " id="messages" tabindex="-1" role="dialog"
+    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header btn-success">
+          <span class="material-icons">
+            timer
+          </span>
+          Your short-login has activated!
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/adminPanel.js" type="module"></script>
+  <script src="/js/adminSetting.js" type="module"></script>
+  <script src="/js/autoLogout.js" type="module"></script>
+  <script src="/js/twoFactorAuth.js" type="module"></script>
+  <script src="/js/changePassword.js" type="module"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
+  </script>
+</body>
+
+</html>
+<!-- <div class="dropdown-divider"></div> -->
