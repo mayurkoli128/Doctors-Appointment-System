@@ -35,7 +35,7 @@ module.exports.forwardAuthenticate = async function(req, res, next) {
             return next();
         }
         req.patient = patient;
-        return res.status(206).redirect('../dashboard');
+        return res.status(206).redirect('../patientDashboard');
     } catch (error) {
         return next(error);
     }

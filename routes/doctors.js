@@ -8,10 +8,9 @@ const _ = require('lodash');
 // @route   /api/secret/mine
 // @desc    route for user to show his all secrets(page render)
 // @access  PRIVATE 
-router.get('/', [adminAuth], async (req, res)=> {
-    const admin = req.admin;
-    const doctors = await Doctor.find({1: 1}, ["firstName", "lastName", "id", "avatar", "specialization"]);
-    res.status(200).json({ok: true, message: 'Success', doctors:doctors, admin: admin.username});
+router.get('/', async (req, res)=> {
+    const doctors = await Doctor.find({1: 1}, ["id", "firstName", "lastName", "gender", "qualification", "phoneNo", "specialization", "email", "intro", "avatar"]);
+    res.status(200).json({ok: true, message: 'Success', doctors:doctors});
 });
 
 // @type    POST
@@ -22,7 +21,7 @@ router.post('/add', [adminAuth], async(req, res)=> {
     const admin = req.admin;
     const doctor = new Doctor(
         _.pick(req.body.doctor, ["firstName", "lastName", "gender", "qualification", "phoneNo", "specialization", "email", "intro", "avatar"])
-    );
+        );
     await doctor.save();
     res.status(201).json({ok: true, message: 'Inserted successfully!', doctor: doctor});
 });
@@ -30,13 +29,12 @@ router.post('/add', [adminAuth], async(req, res)=> {
 // @route   /api/secret/:id
 // @desc    route for user to show his secret with id=:id
 // @access  PRIVATE 
-router.get('/:doctorId', [adminAuth], async (req, res)=> {
-    const admin = req.admin;
+router.get('/:doctorId', async (req, res)=> {
     let doctor = (await Doctor.find({id: req.params.doctorId}, ["firstName", "lastName", "gender", "qualification", "phoneNo", "specialization", "email", "intro", "avatar"]))[0];
     if (!doctor) {
         return res.status(404).json({ok: false, message:'Doctor not found.'});
     }
-    res.status(200).json({ok: true, message: 'Found', doctor: doctor, admin: admin});
+    res.status(200).json({ok: true, message: 'Found', doctor: doctor});
 });
 
 // @type    POST

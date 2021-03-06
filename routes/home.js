@@ -11,10 +11,10 @@ router.get('/', (req, res)=> {
 // @route   /api/users/me
 // @desc    route for to get currently login user
 // @access  PRIVATE 
-router.get('/dashboard', [auth], async (req, res)=> {
+router.get('/patientDashboard', [auth], async (req, res)=> {
     const patient = req.patient;
     // fetching all the records & ecnrypt them....
-    res.status(200).render('dashboard', {
+    res.status(200).render('patientDashboard', {
         patient: patient,
         err : req.flash('error'), 
         success_msg: req.flash('success_msg'),

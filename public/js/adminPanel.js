@@ -28,6 +28,7 @@ insertForm.addEventListener('submit', async (event) => {
 		let res = await addDoctor(doctor);
 		show(res.response.message, "success", "add-doctor-msg");
 		insertForm.reset();
+		document.getElementsByClassName('close')[0].click();
 		viewDoctors();
 	} catch (error) {
 		// ohh no! something went wrong....
@@ -38,7 +39,7 @@ insertForm.addEventListener('submit', async (event) => {
 
 // delete secret
 window.deleteDoctor = async function (id) {
-	if (!confirm('Are you sure you want to delete the secret permanently, Continue ?')) return;
+	if (!confirm('Are you sure you want to delete the record permanently, Continue ?')) return;
 	try {
 		let res = await deleteDoctor(id);
 		if (res.response.ok)	editDetails();
@@ -143,7 +144,7 @@ window.getDoctorDetails = async function (id, toUpdate=false) {
 // view all doctors
 window.editDetails = async function () {
 	try {
-		let {doctors, admin} = await getAllDoctors();
+		let {doctors} = await getAllDoctors();
 		let all = "";
 		for (let i = 0; i < doctors.length; i++) {
 			doctors[i].lastModifiedAt = timeSince(Date.now());
@@ -156,7 +157,7 @@ window.editDetails = async function () {
 					${doctors[i].firstName}
 				</td>
 
-				<td>${doctors[i].lastModifiedAt} - ${admin}</td>
+				<td>${doctors[i].lastModifiedAt}</td>
 
                 <td  style="cursor: pointer;">
                   <div class="btn-group">
@@ -194,8 +195,11 @@ window.viewDoctors = async function() {
 			let logo = doctors[i].firstName[0]+doctors[i].firstName[1], options="", disabled="";
 			logo = logo.toUpperCase();
 			all += `<tr style="cursor: pointer;" id="${doctors[i].id}" onclick="getDoctorDetails(this.id)">
+			
+			<td scope="row"><span class="material-icons" style="vertical-align: bottom; color: green;">verified</span></td>
 			<td scope="row"><span class="profile-logo" style="background-color: ${doctors[i].avatar}"> ${logo}</span></td>
 			<td>
+			
 				${doctors[i].firstName}
 			</td>
 			<td>

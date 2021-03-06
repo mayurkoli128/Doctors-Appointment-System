@@ -63,7 +63,7 @@ CREATE TABLE APPOINTMENT (
 	patientId	int8 NOT NULL,
 	doctorId	int8 NOT NULL,
 	appointmentStatus VARCHAR(566),
-	appointmentDate VARCHAR(566),
+	createdDate VARCHAR(255) not null,
 	startTime	VARCHAR(566),
 	endTime	VARCHAR(566),
     PRIMARY KEY(id),

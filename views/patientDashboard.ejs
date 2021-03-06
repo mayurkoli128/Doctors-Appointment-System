@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+  <!-- navbar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#6b02d4 !important;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"  style="color: rgb(255, 255, 255);">City Hospital</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+
+          <li class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="username" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" style="color: rgb(255, 255, 255); vertical-align: top;" >
+              <span class="material-icons" style="vertical-align: -0.5pc;">
+                person_pin 
+              </span>
+              <%= patient.email %>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li> <a class="dropdown-item" href="#" data-toggle="modal" data-target="#user-profile"><span
+                    class="material-icons" style="vertical-align: bottom;">
+                    account_circle
+                  </span>Account</a></li>
+
+              <li><a class="dropdown-item" href="
+                logout"><span class="material-icons" style="vertical-align: bottom;">
+                    power_settings_new
+                  </span>Logout</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- sidebar -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="sidebar">
+        <ul class="nav nav-sidebar">
+          <div class="sidebar-logo">
+            <!-- Example single danger button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <span class="material-icons" style="vertical-align: bottom;">
+                  add
+                </span>New
+              </button>
+
+              <div class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-secret-modal">Book an appointment</a>
+                </li>
+                
+              </div>
+            </div>
+          </div>
+
+          <a href="javascript:viewDoctors()" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                book
+              </span>Book an appointment
+            </div>
+          </a>
+
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                calendar_today
+              </span>My appointments
+            </div>
+          </a>
+
+         
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                edit
+              </span>Edit Details
+            </div>
+          </a>
+
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                payment
+              </span>Payments
+            </div>
+          </a>
+        </ul>
+      </div>
+
+      <div class="col-sm-12 main">
+        <div class="row">
+          <h3 class="page-header" style="cursor: pointer;" onclick="viewDoctors()"><span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+            calendar_today
+            </span>My appointments</h3>
+          <table class="table table-striped table-hover" style="font-size: smaller;">
+            <div id="system-msg" role="alert" disabled>
+            
+            </div>
+            <thead id="col-names">
+
+            </thead>
+            <tbody id="current-details">
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- book the slot -->
+<div class="modal" id="appointment-slots" tabindex="-1" role="dialog" aria-labelledby="appointment-slots" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Slots</h5>
+        <span data-toggle="popover" id="record-id" title="RECORD ID" class="close material-icons"
+              style="color: rgb(255, 153, 0);">
+              info
+            </span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        
+      </div>
+      <div class="modal-body">
+        
+        <h3 id="currTime"> Book a slot on </h3>
+
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                  wb_twilight
+                  </span>Morning</th>
+                <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                  wb_sunny
+                  </span>Afternoon</th>
+                <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                  nightlight_round
+                  
+                  </span>Evening</th>
+                <th scope="col"><span class="material-icons" style="vertical-align: bottom;">
+                  bedtime
+                  </span>Night</th>
+              </tr>
+            </thead>
+            <tbody id="current-slots">
+              <tr>
+                <td><div class="slot" id="10:00 AM" onclick = "confirmSlot(this.id)">10:00 AM</div></td>
+                <td><div class="slot" id="12:00 PM" onclick = "confirmSlot(this.id)">12:00 PM</div></td>
+                <td><div class="slot" id="06:00 PM" onclick = "confirmSlot(this.id)">06:00 PM</div></td>
+                <td><div class="slot" id="08:00 PM" onclick = "confirmSlot(this.id)">08:00 PM</div></td>
+              </tr>
+              <tr>
+                <td><div class="slot" id="10:15 AM" onclick = "confirmSlot(this.id)">10:15 AM</div></td>
+                <td><div class="slot" id="12:15 PM" onclick = "confirmSlot(this.id)">12:15 PM</div></td>
+                <td><div class="slot" id="06:15 PM" onclick = "confirmSlot(this.id)">06:15 PM</div></td>
+                <td><div class="slot" id="08:15 PM" onclick = "confirmSlot(this.id)">08:15 PM</div></td>
+              </tr>
+              <tr>
+                <td><div class="slot" id="10:30 AM" onclick = "confirmSlot(this.id)">10:30 AM</div></td>
+                <td><div class="slot" id="12:30 PM" onclick = "confirmSlot(this.id)">12:30 PM</div></td>
+                <td><div class="slot" id="06:30 PM" onclick = "confirmSlot(this.id)">06:30 PM</div></td>
+                <td><div class="slot" id="08:30 PM" onclick = "confirmSlot(this.id)">08:30 PM</div></td>
+              </tr>
+              <tr>
+                <td><div class="slot" id="10:45 AM" onclick = "confirmSlot(this.id)">10:45 AM</div></td>
+                <td><div class="slot" id="12:45 PM" onclick = "confirmSlot(this.id)">12:45 PM</div></td>
+                <td><div class="slot" id="10:45 PM" onclick = "confirmSlot(this.id)">10:45 PM</div></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><div class="slot" id="11:00 AM" onclick = "confirmSlot(this.id)">11:00 AM</div></td>
+                <td><div class="slot" id="01:00 PM" onclick = "confirmSlot(this.id)">01:00 PM</div></td>
+                <td><div class="slot" id="07:00 PM" onclick = "confirmSlot(this.id)">07:00 PM</div></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><div class="slot" id="11:15 AM" onclick = "confirmSlot(this.id)">11:15 AM</div></td>
+                <td><div class="slot" id="01:15 PM" onclick = "confirmSlot(this.id)">01:15 PM</div></td>
+                <td><div class="slot" id="07:15 PM" onclick = "confirmSlot(this.id)">07:15 PM</div></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><div class="slot" id="11:30 AM" onclick = "confirmSlot(this.id)">11:30 AM</div></td>
+                <td><div class="slot" id="01:30 PM" onclick = "confirmSlot(this.id)">01:30 PM</div></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- confirm your booking using contact no.-->
+  <div class="modal bd-example-modal-lg" id="confirm-slot" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Slots</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          
+        </div>
+        <div class="modal-body">
+          <div id="confirm-booking-msg" role="alert" disabled>
+            
+          </div>
+          <div class="row">
+            
+            <div class="col-sm-6">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="section">
+                    <h4><span class="material-icons" style="vertical-align: bottom;">
+                      local_hospital
+                      </span>BOOK YOUR APPOINTMENT NOW.</h4>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="section">
+                      <h5><span class="material-icons" style="vertical-align: bottom;">
+                        date_range
+                        </span>On <strong id="dateTime">Mar 05, 2021 at 10:30 AM</strong></h5>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="section">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <img src="../img/dummy-profile-pic.png" class="img-responsive">
+                      </div>
+                      <div class="col-sm-8">
+                        <strong id="doctor-name">Dr.Himanshi mittal</strong>
+                        <p id="doctor-education">MBBS</p>
+                        <p id="doctor-specialization">General Physician</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <form id="confirm-email">
+                <div class="form-group">
+                  <label for="confirm-patient-email">Email address</label>
+                  <input type="email" class="form-control" id="confirm-patient-email" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+              </form>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Model for patient profile -->
+  <div class="modal" id="user-profile" tabindex="-1" role="dialog" aria-labelledby="profile" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profile">Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="col-md-8 offset-md-2">
+            <div class="row">
+              <div class="col-md-8 offset-md-2">
+                <img
+                  src="https://images.pexels.com/photos/753626/pexels-photo-753626.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+                  alt="No Image" srcset="" class="img-circle img-responsive">
+              </div>
+            </div>
+          </div>
+
+          <div class="row top7">
+            <div class="col-lg-12 offset-lg-0 col-sm-8 offset-sm-2">
+              <div class="user-info table-responsive-md">
+                <table class="table table-sm table-primary table-striped">
+                  <tbody>
+                    <tr>
+                      <td style="font-weight: 500;">Username</td>
+                      <td>
+                          <%=patient.email %>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <script src="/js/patientPanel.js" type="module"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
+  </script>
+</body>
+
+</html>
+

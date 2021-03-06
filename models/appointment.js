@@ -1,36 +1,28 @@
 const connection = require('../startup/db');
-const Joi = require('joi');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-class Admin {
-    constructor(admin) {
-        this.username = admin.username;
-        this.password = admin.password;
+class Appointment {
+    constructor(appointment) {
+        this.patientId = appointment.patientId;
+        this.doctorId = appointment.doctorId;
+        this.appointmentStatus = appointment.appointmentStatus;
+        this.startTime = appointment.startTime;
+        this.endTime = appointment.endTime;
         this.createdDate = new Date().toString();
     }
     save = ()=>{
         return new Promise((resolve, reject)=> {
-            const query = `INSERT INTO ADMIN SET ?`
+            const query = `INSERT INTO APPOINTMENT SET ?`
             connection.query(query, this, (err, result)=> {
                 if (err)    reject(err);
                 resolve (result);
             });
         });
     }
-    generateAuthToken = ( isAdmin=false, is2faAuthenticated=false)=> {
-        const expiresIn = 60 * 60; // an hour
-        let token = jwt.sign({
-            username: this.username,
-            isAdmin: isAdmin,
-            is2faAuthenticated: is2faAuthenticated
-        }, process.env.JWT_PRIVATE_TOKEN || "UNSECURED_JWT_PRIVATE_TOKEN", {expiresIn: expiresIn});
-        return token;
-    }
 }
-Admin.find = (filters, columns=["*"])=> {
+Appointment.find = (filters, columns=["*"])=> {
     return new Promise((resolve, reject)=>{
-        let query=`SELECT ${columns.join(', ')} FROM ADMIN WHERE `, len = Object.keys(filters).length;
+        let query=`SELECT ${columns.join(', ')} FROM APPOINTMENT WHERE `, len = Object.keys(filters).length;
         if (filters && typeof filters == 'object') {
             query += Object.keys(filters).map(function (key) {
                 return encodeURIComponent(key) + '="' + (filters[key]) + '"';
@@ -38,13 +30,13 @@ Admin.find = (filters, columns=["*"])=> {
         }
         connection.query(query, (err, result)=>{
             if (err)    reject(err);
-            else resolve(result[0]);
+            else resolve(result);
         });
     });
 }
-Admin.findAndModify = (filters, changes)=> {
+Appointment.findAndModify = (filters, changes)=> {
     return new Promise((resolve, reject)=>{
-        let query=`UPDATE ADMIN SET ? WHERE `;
+        let query=`UPDATE APPOINTMENT SET ? WHERE `;
         if (filters && typeof filters == 'object') {
             query += Object.keys(filters).map(function (key) {
                 return encodeURIComponent(key) + '="' + (filters[key]) + '"';
@@ -56,11 +48,4 @@ Admin.findAndModify = (filters, changes)=> {
         });
     });
 }
-Admin.validate = (admin)=>{
-    const schema = {
-        username: Joi.string().min(3).max(255).required(),
-        password: Joi.string().min(1).max(255).required(),
-    };
-    return Joi.validate(admin, schema);
-}
-module.exports = Admin;
+module.exports = Appointment;

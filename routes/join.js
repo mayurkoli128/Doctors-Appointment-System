@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
     let maxAge = 60*60;
     const token = new Patient(patient).generateAuthToken();
     res.cookie('auth_token', token, {httpOnly: true, maxAge: 1000*maxAge});
-    res.status(200).redirect('../dashboard');
+    res.status(200).redirect('../patientDashboard');
 });
 
 // @type    GET

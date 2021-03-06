@@ -8,10 +8,10 @@ const createAdmin = require('./services/createAdmin');
 const home = require('./routes/home');
 const join = require('./routes/join');
 const doctors = require('./routes/doctors');
+const appointments = require('./routes/appointments');
 const settings = require('./routes/adminSettings');
 
 require('dotenv').config();
-
 // flash messaging...
 app.use(cookieParser('keyboard cat'));
 app.use(session({ 
@@ -41,6 +41,7 @@ app.use('/', home);
 app.use('/doctors/', doctors);
 app.use('/join/', join);
 app.use('/settings/', settings);
+app.use('/appointments/', appointments);
 app.use(error);
 
 // create dummy admin...

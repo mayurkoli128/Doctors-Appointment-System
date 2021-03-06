@@ -14,8 +14,8 @@ export async function getDoctorDetails(doctorId) {
     return {doctor, admin};
 }
 export async function getAllDoctors() {
-    const {doctors, admin} = (await makeRequest({method: "GET", url: `${db}/doctors/`})).response;
-    return {doctors, admin};
+    const {doctors} = (await makeRequest({method: "GET", url: `${db}/doctors/`})).response;
+    return {doctors};
 }
 export async function addDoctor(doctor) {
     // username, publicKey...
@@ -49,4 +49,13 @@ export async function updateDoctorDetails(doctor, doctorId) {
 }
 export async function changePassword(password) {
     return makeRequest({method: "PATCH", url: `${db}/settings/edit-account/password`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: {password: password}});
+}
+
+export async function bookSlot(slot, doctorId) {
+    return makeRequest({method: "POST", url: `${db}/appointments/${doctorId}/book/`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: {startTime: slot, endTime: slot}});
+}
+export async function getAllBookedSlots(doctorId) {
+    const res = await makeRequest({method: "GET", url: `${db}/appointments/${doctorId}/slots/`});
+
+    return {allSlots: res.response.appointmentSlots};
 }
