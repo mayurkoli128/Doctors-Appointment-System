@@ -15,8 +15,10 @@ const confirmEmail = document.getElementById('confirm-email');
 confirmEmail.addEventListener('submit', async (event)=> {
 	event.preventDefault();
 	const doctorId = document.getElementById('record-id').getAttribute('data-content');
+	const email = confirmEmail.elements[0].value;
+	
 	try {
-		const res = await bookSlot(slot, doctorId);
+		const res = await bookSlot(slot, doctorId, email);
 		bookingModal(doctorId);
 		show('You will receive an email confirmation shortly.', "success", "confirm-booking-msg");
 	} catch (error) {

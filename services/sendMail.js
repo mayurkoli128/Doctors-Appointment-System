@@ -1,10 +1,11 @@
 const nodemailer = require("nodemailer");
 require('dotenv').config();
 
-module.exports = async function confirmationMail() {
+module.exports = async function confirmationMail(doctor, patient, appointment) {
       // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   // create reusable transporter object using the default SMTP transport
+  console.log(doctor)
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -12,14 +13,13 @@ module.exports = async function confirmationMail() {
       pass: process.env.PASSWORD, // generated ethereal password
     },
   });
-
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: '"Fred Foo" <>', // sender address
-    to: "kolimayur566@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
+    from: `"City Hospital" <${process.env.EMAIL}>`, // sender address
+    to: patient.email, // list of receivers
+    subject: "Your appointment booked successfully.", // Subject line
     text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    html: `<strong>Dear ${patient.firstName+' '+patient.lastName}</strong><br><br>Your appointment has booked successfully with ${doctor.firstName+' '+doctor.lastName} ,${doctor.qualification} at ${appointment.startTime}.<br><br>Thanks You,`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);

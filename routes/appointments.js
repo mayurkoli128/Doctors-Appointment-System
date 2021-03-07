@@ -1,6 +1,7 @@
 const expres = require('express');
 const router = expres.Router();
 const Patient = require ('../models/patient');
+const Doctor = require('../models/doctor');
 const {auth} = require('../middleware/auth');
 const Appointment = require('../models/appointment');
 const _ = require('lodash');
@@ -28,7 +29,9 @@ router.post('/:doctorId/book', [auth], async (req, res)=> {
     appointment.doctorId = req.params.doctorId;
     appointment.appointmentStatus = "Confirm";
     appointment.save();
-    // await confirmationMail();
+    patient.email = req.body.email;
+    let doctor = (await Doctor.find({id: req.params.doctorId}, ["firstName", "lastName", "qualification"]))[0];
+    await confirmationMail(doctor, patient, appointment);
     res.status(200).json({ok: true, message: 'Appointment Fixed successfully!', appointment: appointment});
 });
 
