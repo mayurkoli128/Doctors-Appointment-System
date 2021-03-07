@@ -15,7 +15,7 @@ module.exports = async function confirmationMail(doctor, patient, appointment) {
   });
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: `"City Hospital" <${process.env.EMAIL}>`, // sender address
+    from: `"XYZ Hospital" <${process.env.EMAIL}>`, // sender address
     to: patient.email, // list of receivers
     subject: "Your appointment booked successfully.", // Subject line
     text: "Hello world?", // plain text body
