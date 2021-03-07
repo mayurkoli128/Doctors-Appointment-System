@@ -200,7 +200,7 @@ window.viewDoctors = async function() {
 			<td scope="row"><span class="profile-logo" style="background-color: ${doctors[i].avatar}"> ${logo}</span></td>
 			<td>
 			
-				${doctors[i].firstName}
+				${doctors[i].firstName + ' ' + doctors[i].lastName}
 			</td>
 			<td>
 				${doctors[i].specialization}
@@ -208,6 +208,7 @@ window.viewDoctors = async function() {
 		</tr>`;
 		}
 		document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col"></th>
 					<th scope="col">AVATAR</th>
 					<th scope="col">DOCTOR NAME</th>
 					<th scope="col">LAST MODIFIED</th>

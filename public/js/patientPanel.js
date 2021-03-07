@@ -3,6 +3,7 @@ import {
 	getAllDoctors,
 	bookSlot,
 	getAllBookedSlots,
+	myAppointments,
 } from '../API/server.js';
 import {show} from '../partials/messages.js';
 
@@ -90,6 +91,35 @@ window.viewDoctors = async function() {
 		console.log(error);
 	}
 };
+window.myAppointment = async function() {
+	try {
+		let {appointments} = await myAppointments();
+		let all = "";
+		for (let i = 0; i < appointments.length; i++) {
+			let logo = appointments[i].firstName[0]+appointments[i].firstName[1];
+			logo = logo.toUpperCase();
+			all += `<tr>
+			<th scope="row"><span class="profile-logo" style="background-color: ${appointments[i].avatar}"> ${logo}</span></th>
+			<th>
+				${appointments[i].firstName}
+				<span> (${appointments[i].qualification})</span>
+			</th>
+			<th>
+				${appointments[i].specialization}
+			</th>
+			<th></th>
+			<th><button type="button"  id="${appointments[i].id}" class="btn btn-info" onclick="bookingModal(this.id)">Book an appointment</button></th>
+		</tr>`;
+		}
+		
+		const tbody = document.getElementById('current-details');
+		tbody.innerHTML = all;
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error, "danger", "system-msg");
+		console.log(error);
+	}
+}
 viewDoctors();
 function getTime() {
 	var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');

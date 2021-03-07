@@ -10,8 +10,9 @@ router.get('/', [auth], async (req, res)=> {
     const patient = req.patient;
     const appointments = await Appointment.find({patientId: patient.id});
     if (appointments.lenght == 0) {
+        return res.status(400).json({ok: false, message: "No appointmets yet."});
     }
-    res.status(201).json({ok: true, message: 'Appointment Fixed successfully!', appointments: appointments});
+    res.status(201).json({ok: true, message: 'Success.', appointments: appointments});
 });
 
 router.post('/:doctorId/book', [auth], async (req, res)=> {

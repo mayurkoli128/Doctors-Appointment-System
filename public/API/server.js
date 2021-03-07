@@ -59,3 +59,8 @@ export async function getAllBookedSlots(doctorId) {
 
     return {allSlots: res.response.appointmentSlots};
 }
+export async function myAppointments() {
+    const res = await makeRequest({method: "GET", url: `${db}/appointments/`});
+
+    return {appointments: res.response.appointments};
+}
