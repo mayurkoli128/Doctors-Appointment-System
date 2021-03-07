@@ -64,7 +64,6 @@ rwForm.addEventListener('submit', async (event) => {
 		intro: e[8].value ,
 	};
 	let doctorId = document.getElementById('record-id').getAttribute('data-content');
-	console.log(doctorId);
 	try {
 		let res = await updateDoctorDetails(doctor, doctorId);
 		if (res.response.ok) {

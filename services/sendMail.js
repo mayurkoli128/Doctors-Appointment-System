@@ -5,7 +5,6 @@ module.exports = async function confirmationMail(doctor, patient, appointment) {
       // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   // create reusable transporter object using the default SMTP transport
-  console.log(doctor)
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
