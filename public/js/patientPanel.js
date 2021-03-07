@@ -4,6 +4,8 @@ import {
 	bookSlot,
 	getAllBookedSlots,
 	myAppointments,
+	getPatientDetails,
+	updatePatientDetails,
 } from '../API/server.js';
 import {show} from '../partials/messages.js';
 
@@ -13,7 +15,6 @@ const confirmEmail = document.getElementById('confirm-email');
 confirmEmail.addEventListener('submit', async (event)=> {
 	event.preventDefault();
 	const doctorId = document.getElementById('record-id').getAttribute('data-content');
-	console.log(doctorId);
 	try {
 		const res = await bookSlot(slot, doctorId);
 		bookingModal(doctorId);
@@ -52,7 +53,7 @@ window.bookingModal = async function(id) {
 			document.getElementById(all[i]).style.backgroundColor="white";
 		}
 		for (let i=0; i<allSlots.length; ++i) {
-			document.getElementById(allSlots[i].startTime).style.backgroundColor="red";
+			document.getElementById(allSlots[i].startTime).style.backgroundColor="#dc3545";
 		}
 		$('#appointment-slots').modal('show');
 		
@@ -70,19 +71,27 @@ window.viewDoctors = async function() {
 			let logo = doctors[i].firstName[0]+doctors[i].firstName[1];
 			logo = logo.toUpperCase();
 			all += `<tr>
-			<th scope="row"><span class="profile-logo" style="background-color: ${doctors[i].avatar}"> ${logo}</span></th>
-			<th>
+			<td scope="row"><span class="profile-logo" style="background-color: ${doctors[i].avatar}"> ${logo}</span></td>
+			<td>
 				${doctors[i].firstName}
 				<span> (${doctors[i].qualification})</span>
-			</th>
-			<th>
+			</td>
+			<td>
 				${doctors[i].specialization}
-			</th>
-			<th></th>
-			<th><button type="button"  id="${doctors[i].id}" class="btn btn-info" onclick="bookingModal(this.id)">Book an appointment</button></th>
+			</td>
+			<td></td>
+			<td><button type="button"  id="${doctors[i].id}" class="btn btn-info" onclick="bookingModal(this.id)">Book an appointment</button></td>
 		</tr>`;
 		}
-		
+		document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col"></th>
+					<th scope="col">DOCTOR NAME</th>
+					<th scope="col">SPECIALIZATION</th>
+					<th scope="col"></th>
+				</tr>`;
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		person
+		</span> My Appointments`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;
 	} catch (error) {
@@ -91,27 +100,129 @@ window.viewDoctors = async function() {
 		console.log(error);
 	}
 };
-window.myAppointment = async function() {
+
+window.editPatientDetails = async function() {
+	const patient = {
+		firstName: document.getElementById('firstName').value,
+		lastName: document.getElementById('lastName').value,
+		phoneNo: document.getElementById('phoneNo').value,
+		email: document.getElementById('email').value,
+		dob: document.getElementById('dob').value,
+	};
+	try {
+		let res = await updatePatientDetails(patient);
+		if (res.response.ok) {
+			show(res.response.message, "success", "edit-patient-msg");
+		} else {
+			show("Something failed.", "danger", "edit-patient-msg");
+		}
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error.response.message, "danger", "edit-patient-msg");
+		console.log(error);
+	}
+}
+window.editPatientDetailsForm = async function() {
+	try {
+		let {patient} = await getPatientDetails();
+		let all = `<td></td><td><form id="edit-form" onsubmit="return false">
+		<div id="edit-patient-msg" role="alert" disabled>
+            
+        </div>
+		<div class="col-lg-10 offset-lg-1">
+		  <div class="form-group">
+		  	<label for="firstName">First name:</label>
+			<input type="text" placeholder="First name" value="${patient.firstName}" name="firstName" id="firstName"
+			  class="form-control form-control-lg"  autocomplete="off" required />
+		  </div>
+		</div>
+
+		<div class="col-lg-10 offset-lg-1">
+		  <div class="form-group">
+			<label for="lastName">Last name:</label>
+			<input type="text" placeholder="Last name" value="${patient.lastName}" name="lastName" id="lastName"
+			  class="form-control form-control-lg"  autocomplete="off" required />
+		  </div>
+		</div>
+
+		<div class="col-lg-10 offset-lg-1">
+		  <div class="form-group">
+			<label for="email">email:</label>
+			<input type="text" placeholder="Enter Your email" value="${patient.email}" name="email" id="email"
+			  class="form-control form-control-lg"  autocomplete="off" required />
+		  </div>
+		</div>
+
+		<div class="col-lg-10 offset-lg-1">
+		  <div class="form-group">
+			<label for="dob">Date of birth:</label>
+			<input type="date" name="dob" id="dob"
+			  class="form-control form-control-lg" value="${patient.dob}"  autocomplete="off" required />
+		  </div>
+		</div>
+
+		<div class="col-lg-10 offset-lg-1">
+		  <div class="form-group">
+			<label for="phoneNo">Phone No:</label>
+			<input type="tel" name="phoneNo" id="phoneNo"
+			  class="form-control form-control-lg"  maxlength="14" data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers" data-fv-phone-country11="IN" data-fv-notempty-message="This field cannot be left blank." placeholder="Mobile No. " data-fv-field="data[User][mobile]" value="${patient.phoneNo}" autocomplete="off" required />
+		  </div>
+		</div>
+
+		<div class="col-lg-10 offset-lg-1">
+		  <div class="form-group">
+			<input type="submit" value="SAVE CHANGES" class="btn btn-primary form-control-lg btn-lg btn-block"
+			 id="edit-patient-btn" onclick="javascript:editPatientDetails()"  autocomplete="off" required/>
+		  </div>
+		</div>
+		
+	  </form></td><td></td>`;
+	  document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+				</tr>`;
+		const tbody = document.getElementById('current-details');
+		tbody.innerHTML = all;
+
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		edit
+		</span> Edit details`;
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error, "danger", "system-msg");
+		console.log(error);
+	}
+};
+window.myAppointments = async function() {
 	try {
 		let {appointments} = await myAppointments();
 		let all = "";
 		for (let i = 0; i < appointments.length; i++) {
-			let logo = appointments[i].firstName[0]+appointments[i].firstName[1];
-			logo = logo.toUpperCase();
 			all += `<tr>
-			<th scope="row"><span class="profile-logo" style="background-color: ${appointments[i].avatar}"> ${logo}</span></th>
-			<th>
-				${appointments[i].firstName}
-				<span> (${appointments[i].qualification})</span>
-			</th>
-			<th>
-				${appointments[i].specialization}
-			</th>
-			<th></th>
-			<th><button type="button"  id="${appointments[i].id}" class="btn btn-info" onclick="bookingModal(this.id)">Book an appointment</button></th>
+			<td scope="row"><span class="material-icons" style="vertical-align: bottom">
+			event
+			</span> ${appointments[i].id}</td>
+			<td>
+				${appointments[i].firstName+' '+appointments[i].lastName}
+			</td>
+			<td>${appointments[i].specialization}</td>
+			<td>${appointments[i].appointmentStatus}</td>
+			<td>${appointments[i].createdDate.substr(0, 24)}</td>
+			<td>${appointments[i].startTime}</td>
 		</tr>`;
 		}
-		
+		document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col">APPOINTMENT ID</th>
+					<th scope="col">DOCTOR NAME</th>
+					<th scope="col">SPECIALIZATION</th>
+					<th scope="col">APPOINTMENT STATUS</th>
+					<th scope="col">DATE OF APPOINTMENT</th>
+					<th scope="col">TIME</th>
+				</tr>`;
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		calendar_today
+		</span> Doctors List`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;
 	} catch (error) {

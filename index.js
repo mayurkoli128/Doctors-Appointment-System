@@ -8,6 +8,7 @@ const createAdmin = require('./services/createAdmin');
 const home = require('./routes/home');
 const join = require('./routes/join');
 const doctors = require('./routes/doctors');
+const patients = require('./routes/patients');
 const appointments = require('./routes/appointments');
 const settings = require('./routes/adminSettings');
 
@@ -39,6 +40,7 @@ app.set('view engine', 'ejs');
 // routes...
 app.use('/', home);
 app.use('/doctors/', doctors);
+app.use('/patients/', patients);
 app.use('/join/', join);
 app.use('/settings/', settings);
 app.use('/appointments/', appointments);

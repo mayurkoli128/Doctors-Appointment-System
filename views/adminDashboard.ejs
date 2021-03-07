@@ -45,7 +45,7 @@
               <span class="material-icons" style="vertical-align: -0.5pc;">
                 person_pin
               </span>
-              username
+              ADMIN
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
@@ -188,18 +188,22 @@
             <div class="form-group">
               <select class="form-control form-control-lg" name="qualification" id="qualification">
                 <option selected>Choose qualification</option>
-                <option>education - 1</option>
-                <option>education - 2</option>
-                <option>education - 3</option>
+                    <option>Bachelor of Medicine, Bachelor of Surgery (MBBS)</option>
+                    <option>Bachelor of Medicine (B.Med)</option>
+                    <option>Doctor of Medicine (MD)</option>
+                    <option>Doctor of Osteopathic Medicine (DO)</option>
               </select>
             </div>
 
             <div class="form-group">
               <select class="form-control form-control-lg" name="specialization" id="specialization">
                 <option selected>Choose specialization</option>
-                <option>specialization - 1</option>
-                <option>specialization - 2</option>
-                <option>specialization - 3</option>
+                    <option>General Physician</option>
+                    <option>Cardiologist</option>
+                    <option>Critical Care Medicine Specialists</option>
+                    <option>Consultant Physician,
+                      Special Interest in Infectious Diseases</option>
+                    <option>Pathologists</option>
               </select>
             </div>
 
@@ -305,18 +309,22 @@
                 <div class="form-group">
                   <select class="form-control form-control-lg" name="qualification-show" id="qualification-show">
                     <option selected>Choose qualification</option>
-                    <option>education - 1</option>
-                    <option>education - 2</option>
-                    <option>education - 3</option>
+                    <option>Bachelor of Medicine, Bachelor of Surgery (MBBS)</option>
+                    <option>Bachelor of Medicine (B.Med)</option>
+                    <option>Doctor of Medicine (MD)</option>
+                    <option>Doctor of Osteopathic Medicine (DO)</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <select class="form-control form-control-lg" name="specialization-show" id="specialization-show">
                     <option selected>Choose specialization</option>
-                    <option>specialization - 1</option>
-                    <option>specialization - 2</option>
-                    <option>specialization - 3</option>
+                    <option>General Physician</option>
+                    <option>Cardiologist</option>
+                    <option>Critical Care Medicine Specialists</option>
+                    <option>Consultant Physician,
+                      Special Interest in Infectious Diseases</option>
+                    <option>Pathologists</option>
                   </select>
                 </div>
 
@@ -371,10 +379,9 @@
 
               <div class="custom-control custom-switch top7">
                 <input type="checkbox" class="custom-control-input" id="isAvailable">
-                <label class="custom-control-label" for="isAvailable">is available</label>
+                <label class="custom-control-label" for="isAvailable" aria-selected="true">is available</label>
               </div>
 
-              <h3 id="currTime"> Book a slot on </h3>
 
               <table class="table table-borderless">
                 <thead>

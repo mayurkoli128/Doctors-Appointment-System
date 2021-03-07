@@ -273,7 +273,6 @@ function getTime() {
 	var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
 	document.getElementById('currTime').innerHTML = "Make an appointment "+utc;
 }	
-getTime();
 
 rwForm.addEventListener('input', () => {
 	const obj = document.getElementById('doctorUpdate');

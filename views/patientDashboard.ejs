@@ -92,7 +92,7 @@
             </div>
           </a>
 
-          <a href="javascript:myAppointment()" class="sidebar-links">
+          <a href="javascript:myAppointments()" class="sidebar-links">
             <div class="sidebar-logo">
               <span class="material-icons" style="vertical-align: bottom;">
                 calendar_today
@@ -101,29 +101,20 @@
           </a>
 
          
-          <a href="#" class="sidebar-links">
+          <a href="javascript:editPatientDetailsForm()" class="sidebar-links">
             <div class="sidebar-logo">
               <span class="material-icons" style="vertical-align: bottom;">
                 edit
               </span>Edit Details
             </div>
           </a>
-
-          <a href="#" class="sidebar-links">
-            <div class="sidebar-logo">
-              <span class="material-icons" style="vertical-align: bottom;">
-                payment
-              </span>Payments
-            </div>
-          </a>
+          
         </ul>
       </div>
 
       <div class="col-sm-12 main">
         <div class="row">
-          <h3 class="page-header" style="cursor: pointer;" onclick="viewDoctors()"><span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
-            calendar_today
-            </span>My appointments</h3>
+          <h3 class="page-header" id="main-dashboard-head" style="cursor: pointer;" onclick="viewDoctors()">My appointments</h3>
           <table class="table table-striped table-hover" style="font-size: smaller;">
             <div id="system-msg" role="alert" disabled>
             
@@ -331,47 +322,33 @@
                       <td>
                           <%=patient.email %>
                       </td>
-                      <td>
-                        <span class="material-icons" style="vertical-align: bottom;">
-                          edit 
-                        </span>
-                      </td>
+                      
                     </tr>
                     <tr>
                       <td style="font-weight: 500;">Phone no.</td>
                       <td>
                           <%=patient.phoneNo %>
                       </td>
-                      <td>
-                        <span class="material-icons" style="vertical-align: bottom;">
-                          edit 
-                        </span>
-                      </td>
+                      
                     </tr>
                     <tr>
                       <td style="font-weight: 500;">Name</td>
                       <td>
                           <%=patient.firstName + ` `+ patient.lastName %>
                       </td>
-                      <td>
-                        <span class="material-icons" style="vertical-align: bottom;">
-                          edit 
-                        </span>
-                      </td>
+                      
                     </tr>
                     <tr>
                       <td style="font-weight: 500;">Gender</td>
                       <td>
                           <%=patient.gender %>
                       </td>
-                      <td></td>
                     </tr>
                     <tr>
                       <td style="font-weight: 500;">Date of birth</td>
                       <td>
                           <%=patient.dob %>
                       </td>
-                      <td></td>
                     </tr>
                   </tbody>
                 </table>

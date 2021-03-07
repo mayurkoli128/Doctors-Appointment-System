@@ -13,6 +13,10 @@ export async function getDoctorDetails(doctorId) {
     const {admin, doctor} = (await makeRequest({method: "GET", url: `${db}/doctors/${doctorId}`})).response;
     return {doctor, admin};
 }
+export async function getPatientDetails() {
+    const {patient} = (await makeRequest({method: "GET", url: `${db}/patients/me`})).response;
+    return {patient};
+}
 export async function getAllDoctors() {
     const {doctors} = (await makeRequest({method: "GET", url: `${db}/doctors/`})).response;
     return {doctors};
@@ -46,6 +50,17 @@ export async function updateDoctorDetails(doctor, doctorId) {
 		intro: doctor.intro
     }
     return makeRequest({method: "PATCH", url: `${db}/doctors/${doctorId}/`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: data});
+}
+export async function updatePatientDetails(patient) {
+    // username, publicKey...
+    const data = {
+        firstName: patient.firstName,
+		lastName: patient.lastName,
+		gender: patient.gender,
+		phoneNo: patient.phoneNo,
+		email: patient.email,
+    }
+    return makeRequest({method: "PATCH", url: `${db}/patients/edit-details/`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: data});
 }
 export async function changePassword(password) {
     return makeRequest({method: "PATCH", url: `${db}/settings/edit-account/password`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: {password: password}});

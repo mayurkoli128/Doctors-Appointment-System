@@ -8,7 +8,7 @@ const confirmationMail = require('../services/sendMail');
 
 router.get('/', [auth], async (req, res)=> {
     const patient = req.patient;
-    const appointments = await Appointment.find({patientId: patient.id});
+    const appointments = await Appointment.find({patientId: patient.id}, ["APPOINTMENT.id", "DOCTOR.firstName", "DOCTOR.lastName", "APPOINTMENT.appointmentStatus", "APPOINTMENT.createdDate", "APPOINTMENT.startTime", "DOCTOR.specialization"]);
     if (appointments.lenght == 0) {
         return res.status(400).json({ok: false, message: "No appointmets yet."});
     }
@@ -17,7 +17,7 @@ router.get('/', [auth], async (req, res)=> {
 
 router.post('/:doctorId/book', [auth], async (req, res)=> {
     const patient = req.patient;
-    const result = (await Appointment.find({doctorId: req.params.doctorId, startTime: req.body.startTime}, ["id", "startTime"]))[0];
+    const result = (await Appointment.find({doctorId: req.params.doctorId, startTime: req.body.startTime}, ["APPOINTMENT.id", "startTime"]))[0];
     if (result) {
         return res.status(400).json({ok: false, message: "Appointment has already fixed"});
     }
@@ -33,7 +33,7 @@ router.post('/:doctorId/book', [auth], async (req, res)=> {
 });
 
 router.get('/:doctorId/slots/', async (req, res)=> {
-    const result = await Appointment.find({doctorId: req.params.doctorId}, ["id", "startTime"]);
+    const result = await Appointment.find({doctorId: req.params.doctorId}, ["APPOINTMENT.id", "startTime"]);
     res.status(200).json({ok: true, message: 'Appointment Fixed successfully!', appointmentSlots: result});
 });
 module.exports = router;
