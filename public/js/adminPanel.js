@@ -67,6 +67,7 @@ rwForm.addEventListener('submit', async (event) => {
 	try {
 		let res = await updateDoctorDetails(doctor, doctorId);
 		if (res.response.ok) {
+			editDetails();
 			document.getElementsByClassName('close')[1].click();
 			rwForm.reset();
 			document.getElementById('doctorUpdate').disabled=true;
@@ -119,7 +120,7 @@ window.getDoctorDetails = async function (id, toUpdate=false) {
 						<td>${doctor.qualification}</td>
 					</tr>
 					<tr>
-						<th>SPECIALIZATION : </th>
+						<th>LAST MODIFIED : </th>
 						<td>${doctor.specialization}</td>
 					</tr>
 					<tr>
@@ -174,7 +175,7 @@ window.editDetails = async function () {
 		document.getElementById('col-names').innerHTML = `<tr>
 					<th scope="col">ID</th>
 					<th scope="col">DOCTOR NAME</th>
-					<th scope="col">SPECIALIZATION</th>
+					<th scope="col">LAST MODIFIED</th>
 				</tr>`;
 
 		const tbody = document.getElementById('current-details');

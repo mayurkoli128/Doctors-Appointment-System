@@ -53,9 +53,11 @@ window.bookingModal = async function(id) {
 		let all = ["12:00 PM", "06:00 PM", "06:30 PM", "10:00 AM", "06:15 PM", "08:00 PM", "01:30 PM", "10:15 AM", "12:15 PM", "08:15 PM", "08:30 PM", "10:45 PM", "12:30 PM", "10:30 AM", "07:00 PM", "12:45 PM", "10:45 AM", "11:00 AM", "01:00 PM", "01:15 PM", "07:15 PM", "11:15 AM", "11:30 AM"];
 		for (let i=0; i<all.length; ++i) {
 			document.getElementById(all[i]).style.backgroundColor="white";
+			document.getElementById(all[i]).style.color="black"
 		}
 		for (let i=0; i<allSlots.length; ++i) {
 			document.getElementById(allSlots[i].startTime).style.backgroundColor="#dc3545";
+			document.getElementById(allSlots[i].startTime).style.color="white"
 		}
 		$('#appointment-slots').modal('show');
 		
