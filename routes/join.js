@@ -80,9 +80,8 @@ router.post('/register', async(req, res) => {
     let maxAge = 60*60;
     let token = patient.generateAuthToken();
     res.cookie('auth_token', token, {httpOnly: true, maxAge: 1000*maxAge});
-    res
-        .status(200)
-        .json({ok: true, message: "Success", patient: _.pick(patient, ["id", "email"])});
+    res.status(200)
+        .redirect('../patientDashboard');
 });
 
 // @type    GET
