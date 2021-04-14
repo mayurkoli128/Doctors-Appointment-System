@@ -68,6 +68,7 @@ router.patch('/:doctorId/', [adminAuth], async (req, res)=> {
         if (typeof value === 'undefined')   delete doctor[key];
     });
     const result = await Doctor.findAndModify({id: req.params.doctorId}, doctor);
+    
     res.status(200).json({ok: true, message: "Data has been updated successfully!"});
 });
 

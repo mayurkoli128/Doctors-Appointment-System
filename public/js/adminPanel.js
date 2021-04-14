@@ -8,10 +8,12 @@ import {
 	getAllAppointments,
 	getPatientDetailsByID,
 	uploadMedicalReport,
-	getMedicalReports
+	getMedicalReports,
+	sendReports
 } from '../API/server.js';
 
 import {show} from '../partials/messages.js';
+
 
 // upload report documents...
 let uploadReport = document.getElementById('patient-report-form');
@@ -61,7 +63,18 @@ insertForm.addEventListener('submit', async (event) => {
 	}
 	return false ;
 });
-
+// send reports to doctor
+window.sendReports = async function (from, to) {
+	show('The operation will attached medical history of patient and may take a signficant amount of time to complete, you will be notified shortly.', "warning", "system-msg");
+	try {
+		let res = await sendReports(from, to);
+		show('Message has been sent', "success", "system-msg");
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error.response.message, "danger", "system-msg");
+		console.log(error);
+	}
+}
 // delete secret
 window.deleteDoctor = async function (id) {
 	if (!confirm('Are you sure you want to delete the record permanently, Continue ?')) return;
@@ -245,7 +258,7 @@ window.viewAppointmentDetails = async function() {
 				<td>${appointments[i].specialization}</td>
 				<td>
 					<button type="button" class="btn btn-info"> 
-						<span class="material-icons" style="vertical-align: bottom;">send</span>
+						<span class="material-icons" style="vertical-align: bottom;" onclick="sendReports(${appointments[i].doctorsID}, ${appointments[i].patientsID})">send</span>
 					</button>
 				</td>
 				<td>

@@ -117,6 +117,11 @@ export async function getMedicalReports(patientId) {
 
     return {reports: res.response.reports};
 }
+export async function sendReports(from, to) {
+    const res = await makeRequest({method: "GET", url: `${db}/patients/medical-history/send/${from}/${to}/`});
+
+    return res;
+}
 export async function getAllBookedSlots(doctorId) {
     const res = await makeRequest({method: "GET", url: `${db}/appointments/${doctorId}/slots/`});
 

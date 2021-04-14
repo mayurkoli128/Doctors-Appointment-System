@@ -5,8 +5,10 @@ const Appointment = require('../models/appointment');
 const MedicalHistory = require('../models/medicalHistory');
 const {auth} = require('../middleware/auth');
 const {adminAuth} = require('../middleware/adminAuth');
+const sendReports = require('../services/sendReports');
 const multer = require('multer');
 const _ = require('lodash');
+const Doctor = require('../models/doctor');
 
 // Multer storage engine
 var storage = multer.diskStorage({
@@ -34,7 +36,7 @@ router.patch('/edit-details/', [auth], async (req, res)=> {
     patient = new Patient(
         _.pick(req.body, ["firstName", "lastName", "phoneNo", "email", "dob", "email"])
     );
-
+    
     Object.entries(patient).forEach(([key, value]) => {
         if (typeof value === 'undefined')   delete patient[key];
     });
@@ -62,8 +64,23 @@ router.get('/', [adminAuth], async (req, res)=> {
 // @route   /api/secret/mine
 // @desc    route for user to show his all secrets(page render)
 // @access  PRIVATE 
+router.get('/medical-history/send/:from/:to', [adminAuth], async (req, res)=> {
+    const doctor = await Doctor.find({id: req.params.from});
+    const patient = await Patient.find({id: req.params.to}, ["firstName", "lastName", "email", "gender"]);
+
+    const reports = await MedicalHistory.find({"MEDICAL_HISTORY.patientId": req.params.to}, ["MEDICAL_HISTORY.id", "MEDICAL_HISTORY.fileName", "MEDICAL_HISTORY.path", "APPOINTMENT.doctorId AS doctorId",  "APPOINTMENT.createdDate", "APPOINTMENT.startTime"]);
+
+    let info = await sendReports(doctor[0], patient[0], reports);
+    
+    res.status(200).json({ok: true, message: 'Success'});
+});
+// @type    GET
+// @route   /api/secret/mine
+// @desc    route for user to show his all secrets(page render)
+// @access  PRIVATE 
 router.get('/medical-history/:id', [adminAuth], async (req, res)=> {
     const reports = await MedicalHistory.find({"MEDICAL_HISTORY.patientId": req.params.id}, ["MEDICAL_HISTORY.id", "MEDICAL_HISTORY.fileName", "MEDICAL_HISTORY.path", "APPOINTMENT.doctorId AS doctorId",  "APPOINTMENT.createdDate", "APPOINTMENT.startTime"]);
+
     res.status(200).json({ok: true, message: 'Success', reports:reports});
 });
 // @type    GET
