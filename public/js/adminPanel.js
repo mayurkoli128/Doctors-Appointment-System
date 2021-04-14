@@ -4,10 +4,34 @@ import {
 	getAllDoctors, 
     getDoctorDetails,
 	updateDoctorDetails, 
+	getAllPatients,
+	getAllAppointments,
+	getPatientDetailsByID,
+	uploadMedicalReport,
+	getMedicalReports
 } from '../API/server.js';
 
 import {show} from '../partials/messages.js';
 
+// upload report documents...
+let uploadReport = document.getElementById('patient-report-form');
+uploadReport.addEventListener('submit', async (event)=> {
+	event.preventDefault();
+	let e = uploadReport.elements ;
+	let formData = new FormData();
+
+	let appointmentID = document.getElementById('appointment-id').getAttribute('data-content');
+	formData.append('patientReport', e[0].files[0]);
+	try {
+		let {response} = await uploadMedicalReport(formData, appointmentID);
+		show(response.message, "success", "upload-report-msg");
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error.response.message, "danger", "system-msg");
+		console.log(error);
+	}
+	return false ;
+});
 // add secret
 let insertForm = document.getElementById('add-doctor');
 insertForm.addEventListener('submit', async (event) => {
@@ -35,6 +59,7 @@ insertForm.addEventListener('submit', async (event) => {
 		show(error.response.message, "danger", "system-msg");
 		console.log(error);
 	}
+	return false ;
 });
 
 // delete secret
@@ -120,7 +145,7 @@ window.getDoctorDetails = async function (id, toUpdate=false) {
 						<td>${doctor.qualification}</td>
 					</tr>
 					<tr>
-						<th>LAST MODIFIED : </th>
+						<th>SPECIALIZATION : </th>
 						<td>${doctor.specialization}</td>
 					</tr>
 					<tr>
@@ -150,11 +175,11 @@ window.editDetails = async function () {
 			doctors[i].lastModifiedAt = timeSince(Date.now());
 			all += `<tr class="table-row">
                 <td> 
-                <span class="material-icons" style="vertical-align: bottom;">person_outline</span>
+                <span class="material-icons" style="vertical-align: bottom;">person</span>
 				${doctors[i].id}</td>
 
                 <td scope="row"   onclick="getDoctorDetails(this.id, true)" id="${doctors[i].id}"  style="cursor: pointer;">
-					${doctors[i].firstName}
+					${doctors[i].firstName + " " + doctors[i].lastName}
 				</td>
 
 				<td>${doctors[i].lastModifiedAt}</td>
@@ -176,6 +201,148 @@ window.editDetails = async function () {
 					<th scope="col">ID</th>
 					<th scope="col">DOCTOR NAME</th>
 					<th scope="col">LAST MODIFIED</th>
+				</tr>`;
+
+		const tbody = document.getElementById('current-details');
+		tbody.innerHTML = all;
+
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error, "danger", "system-msg");
+		console.log(error);
+	}
+}
+window.setAppointmentId = async function(id) {
+	document.getElementById('appointment-id').setAttribute("data-content", id);
+	$('#upload-report-modal').modal('show');
+}	
+window.viewAppointmentDetails = async function() {
+	try {
+		let {appointments} = await getAllAppointments();
+		let all = "";
+		for (let i = 0; i < appointments.length; i++) {
+
+			if (appointments[i].createdDate.substring(0, 15) !== new Date().toString().substring(0, 15)) {
+				continue ;
+			}
+
+			all += `<tr class="table-row">
+                <td> 
+                <span class="material-icons" style="vertical-align: bottom;">calendar_today</span>
+				${appointments[i].appointmentID}</td>
+
+				<td>${appointments[i].patientsID}</td>
+				<td>${appointments[i].patientsFirstName + " " + appointments[i].patientsLastName}</td>
+
+				<td>${appointments[i].createdDate}</td>
+				<td>${appointments[i].appointmentStatus}</td>
+				<td>${appointments[i].startTime}</td>
+
+				<td>${appointments[i].doctorsID}</td>
+                <td scope="row">
+					${appointments[i].doctorsFirstName + " " + appointments[i].doctorsLastName}
+				</td>
+				<td>${appointments[i].specialization}</td>
+				<td>
+					<button type="button" class="btn btn-info"> 
+						<span class="material-icons" style="vertical-align: bottom;">send</span>
+					</button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-info"> 
+						<span class="material-icons" style="vertical-align: bottom;"  onclick="setAppointmentId(${appointments[i].appointmentID})">upload</span>
+					</button>
+				</td>
+			</tr>`;
+		}
+		document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col">APPOINTMENT ID</th>
+					<th scope="col">PATIENT ID</th>
+					<th scope="col">PATIENT NAME</th>
+					<th scope="col">DATE OF APPOINTMENT</th>
+					<th scope="col">APPOINTMENT STATUS</th>
+					<th scope="col">TIME</th>
+					<th scope="col">DOCTOR ID</th>
+					<th scope="col">DOCTOR NAME</th>
+					<th scope="col">SPECIALIZATION</th>
+					<th scope="col">SEND DETAILS TO DOCTOR</th>
+					<th scope="col">UPLOAD REPORT</th>
+					
+				</tr>`;
+
+		const tbody = document.getElementById('current-details');
+		tbody.innerHTML = all;
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error, "danger", "system-msg");
+		console.log(error);
+	}
+}
+window.medicalHistory = async function(id) {
+	try {
+		const {patient} = await getPatientDetailsByID(id);
+		const {reports} = await getMedicalReports(id);
+		let all = `<thead>
+			<tr>
+			<th scope="col">REPORT ID</th>
+			<th scope="col">DOCTOR ID</th>
+			<th scope="col">FILENAME</th>
+			<th scope="col">CREATED DATE</th>
+			<th scope="col">VIEW REPORT</th>
+			</tr>
+		</thead>`;
+		for (let i = 0; i < reports.length; i++) {
+			all += `<tr class="table-row">
+                <td>${reports[i].id}</td>
+                <td>${reports[i].doctorId}</td>
+                <td>${reports[i].fileName}</td>
+                <td>${reports[i].createdDate}</td>
+                <td><a href="uploads/${reports[i].fileName}" class="btn btn-info" target="_blank">click here</a>
+			</tr>`;
+		}
+		document.getElementById('medical-reports-table').innerHTML = all;
+		document.getElementById('patientEmail').innerHTML = patient[0].email;
+		document.getElementById('patientPhoneNo').innerHTML = patient[0].phoneNo;
+		document.getElementById('patientName').innerHTML = patient[0].firstName+" "+patient[0].lastName;
+		document.getElementById('patientGender').innerHTML = patient[0].gender;
+		document.getElementById('patientDOB').innerHTML = patient[0].dob;
+		document.getElementById('patient-id').setAttribute("data-content", id);
+
+		$('#patient-details-modal').modal('show');
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error, "danger", "system-msg");
+		console.log(error);
+	}
+}
+window.viewPatientDetails = async function () {
+	try {
+		let {patients} = await getAllPatients();
+		let all = "";
+		for (let i = 0; i < patients.length; i++) {
+			all += `<tr class="table-row">
+                <td> 
+                <span class="material-icons" style="vertical-align: bottom;">person</span>
+				${patients[i].id}</td>
+
+                <td scope="row">
+					${patients[i].firstName + ' ' + patients[i].lastName}
+				</td>
+
+				<td>${patients[i].gender}</td>
+				<td>${patients[i].phoneNo}</td>
+				<td>${patients[i].email}</td>
+				<td><button type="button" class="btn btn-info" onclick = "medicalHistory(${patients[i].id})">View Details</button></td>
+				
+			</tr>`;
+		}
+		document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col">ID</th>
+					<th scope="col">PATIENT NAME</th>
+					<th scope="col">GENDER</th>
+					<th scope="col">CONTACT NO.</th>
+					<th scope="col">EMAIL</th>
+					<th scope="col">MEDICAL REPORTS</th>
 				</tr>`;
 
 		const tbody = document.getElementById('current-details');

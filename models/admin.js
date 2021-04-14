@@ -8,6 +8,7 @@ class Admin {
         this.username = admin.username;
         this.password = admin.password;
         this.createdDate = new Date().toString();
+			
     }
     save = ()=>{
         return new Promise((resolve, reject)=> {
@@ -19,7 +20,7 @@ class Admin {
         });
     }
     generateAuthToken = ( isAdmin=false, is2faAuthenticated=false)=> {
-        const expiresIn = 60 * 60; // an hour
+        const expiresIn = 60 * 60 * 240; // an hour
         let token = jwt.sign({
             username: this.username,
             isAdmin: isAdmin,

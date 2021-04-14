@@ -5,13 +5,13 @@ require('dotenv').config();
 
 // if user trying to get private routes authenticate the route first then allow user to enter in
 module.exports.auth = async function(req, res, next) {
-    token = req.cookies.auth_token;
+    let token = req.cookies.auth_token;
     if(!token) {
         return res.status(401).json({ok: false, message: 'Unauthorized'});
     }
     try {
         const {email} = jwt.verify(token, process.env.JWT_PRIVATE_TOKEN||"UNSECURED_JWT_PRIVATE_TOKEN");
-        const patient = await Patient.find({email: email}, ["id", "email", "phoneNo", "firstName", "lastName", "gender", "dob"]);
+        const patient = (await Patient.find({email: email}, ["id", "email", "phoneNo", "firstName", "lastName", "gender", "dob"]))[0];
         if (!patient) {
             return res.status(401).json({ok: false, message: 'Sorry, you are not allowed to access this page'});
         }
@@ -29,7 +29,7 @@ module.exports.forwardAuthenticate = async function(req, res, next) {
     }
     try {
         const {email} = jwt.verify(token, process.env.JWT_PRIVATE_TOKEN || "UNSECURED_JWT_PRIVATE_TOKEN");
-        const patient = await Patient.find({email: email});
+        const patient = (await Patient.find({email: email}))[0];
 
         if (!patient) {
             return next();

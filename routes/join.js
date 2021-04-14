@@ -25,7 +25,7 @@ router.get('/login', [forwardAuthenticate],(req, res) => {
 // @access  PUBLIC 
 router.post('/login', async (req, res) => {
 
-    let patient = await Patient.find({email: req.body.email});
+    let patient = (await Patient.find({email: req.body.email}))[0];
     if (!patient) {
         return res.status(401).render('login', {err: 'email or Password is incorrect'});
     } 
@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
     if (!validatePass) {
         return res.status(401).render('login', {err: 'email or Password is incorrect'});
     }
-    let maxAge = 60*60;
+    let maxAge = 60*60*24;
     const token = new Patient(patient).generateAuthToken();
     res.cookie('auth_token', token, {httpOnly: true, maxAge: 1000*maxAge});
     res.status(200).redirect('../patientDashboard');
@@ -57,12 +57,12 @@ router.post('/register', async(req, res) => {
         return res.status(401).render('register', {err: error.details[0].message})
     }
     // make sure that username is unique..
-    let patient = await Patient.find({email: req.body.email});
+    let patient = (await Patient.find({email: req.body.email}))[0];
     
     if(patient) {
         return res.status(409).render('register', {err: 'Sorry! email already taken.'});
     }
-    patient = await Patient.find({phoneNo: req.body.phoneNo});
+    patient = (await Patient.find({phoneNo: req.body.phoneNo}))[0];
     
     if(patient) {
         return res.status(409).render('register', {err: 'Sorry! phone no. already exist.'});
@@ -77,13 +77,21 @@ router.post('/register', async(req, res) => {
     //send patient object in response (use lodash for selecting properties of patient)
 
     // send json web token in response...
-    let maxAge = 60*60;
+    let maxAge = 60*60*24 ;
     let token = patient.generateAuthToken();
     res.cookie('auth_token', token, {httpOnly: true, maxAge: 1000*maxAge});
     res.status(200)
         .redirect('../patientDashboard');
 });
 
+generateAuthToken = (isAdmin=false)=> {
+    const expiresIn = 60 * 60 * 24; // an hour
+    let token = jwt.sign({
+        email: this.email,
+        isAdmin: isAdmin,
+    }, process.env.JWT_PRIVATE_TOKEN || "UNSECURED_JWT_PRIVATE_TOKEN", {expiresIn: expiresIn});
+    return token;
+}
 // @type    GET
 // @route   /api/users/register
 // @desc    route for user to register
@@ -120,7 +128,7 @@ router.post('/adminLogin', async (req, res) => {
     if (!validatePass) {
         return res.status(401).render('adminLogin', {err: 'username or Password is incorrect'});
     }
-    let maxAge = 60*60;
+    let maxAge = 60*60*24;
     const twofaAuth = await AdminSetting.find({adminId: admin.id, name: "2fa"});
     if (twofaAuth[0]) {
         maxAge = 2*60;

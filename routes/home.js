@@ -18,7 +18,6 @@ router.get('/patientDashboard', [auth], async (req, res)=> {
         patient: patient,
         err : req.flash('error'), 
         success_msg: req.flash('success_msg'),
-        info: req.flash('info')
     });
 });
 
@@ -31,9 +30,9 @@ router.get('/adminDashboard', [adminAuth], async (req, res)=> {
     // fetching all the records & ecnrypt them....
     res.status(200).render('adminDashboard', {
         admin: admin,
-        err : req.flash('error'), 
-        success_msg: req.flash('success_msg'),
-        info: req.flash('info')
+        err : req.flash('error')[0], 
+        success_msg: req.flash('success_msg')[0],
+        info: req.flash('info')[0]
     });
 });
 

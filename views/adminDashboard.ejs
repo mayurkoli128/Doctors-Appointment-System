@@ -21,6 +21,7 @@
   <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#0287d4 !important;">
     <div class="container-fluid">
       <div class="navbar-header">
+
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
           aria-expanded="false" aria-controls="navbar">
           <span class="sr-only">Toggle navigation</span>
@@ -101,27 +102,21 @@
             </div>
           </a>
 
-          <a href="#" class="sidebar-links">
+          <a href="javascript:viewPatientDetails()" class="sidebar-links">
             <div class="sidebar-logo">
               <span class="material-icons" style="vertical-align: bottom;">
                 people
               </span>View patients
             </div>
           </a>
-          <a href="#" class="sidebar-links">
+          <a href="javascript:viewAppointmentDetails()" class="sidebar-links">
             <div class="sidebar-logo">
               <span class="material-icons" style="vertical-align: bottom;">
                 calendar_today
               </span>View appointments
             </div>
           </a>
-          <a href="#" class="sidebar-links">
-            <div class="sidebar-logo">
-              <span class="material-icons" style="vertical-align: bottom;">
-                feedback
-              </span>View feedback
-            </div>
-          </a>
+          
 
           <a href="javascript:editDetails()" class="sidebar-links">
             <div class="sidebar-logo">
@@ -131,11 +126,19 @@
             </div>
           </a>
 
+          <a href="#" class="sidebar-links">
+            <div class="sidebar-logo">
+              <span class="material-icons" style="vertical-align: bottom;">
+                feedback
+              </span>View feedback
+            </div>
+          </a>
+
         </ul>
       </div>
 
       <div class="col-sm-12 main">
-        <div class="row">
+          <div class="row">
           <h3 class="page-header" style="cursor: pointer;" onclick="viewDoctors()"><span class="material-icons"
               style="vertical-align: bottom; font-size: 25px;">
               person
@@ -157,6 +160,136 @@
     </div>
   </div>
 
+  <!-- Modal to upload patient report -->
+
+  <div class="modal" id="upload-report-modal" tabindex="-1" role="dialog" aria-labelledby="upload-report" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="upload-report">Upload report</h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span data-toggle="popover" id="appointment-id" title="RECORD ID" class="close material-icons"
+              style="color: rgb(255, 153, 0);">
+              info
+            </span></button>
+        </div>
+        <div class="modal-body">
+          <div id="upload-report-msg" role="alert" disabled>
+
+          </div>
+          <div class="alert alert-info" role="alert">
+            * Upload patients medical records to their user account so the specialist can access them electronically. 
+          </div>
+            <form id="patient-report-form">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="patientReport" name="patientReport">
+              <label class="custom-file-label" for="patientReport">Choose file</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal for to show the details of patients -->
+  <div class="modal" id="patient-details-modal" tabindex="-1" role="dialog" aria-labelledby="patient-details" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="patient-title">Patient Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            <span data-toggle="popover" id="patient-id" title="RECORD ID" class="close material-icons"
+              style="color: rgb(255, 153, 0);">
+              info
+            </span></button>
+        </div>
+        <div class="modal-body">
+          
+          <div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">PROFILE</a></li>
+              <li role="presentation"><a href="#medical-reports" aria-controls="medical-reports" role="tab" data-toggle="tab">MEDICAL REPORTS</a></li>
+            </ul>
+          
+            <!-- Tab panes -->
+            <div class="tab-content top10">
+              <div role="tabpanel" class="tab-pane active" id="profile">
+
+                <div style="text-align: center ;">
+                  <img
+                  src="../img/dummy-profile-pic.png"
+                  alt="No Image" srcset="" class="img-circle" height="200px" width="200px">
+                </div>
+      
+                <div class="row top10" style="margin-left: auto; margin-right: auto;">
+                  <div class="col-lg-12">
+                    <div class="user-info table-responsive-md">
+                      <table class="table table-sm table-primary table-striped" id="patient-details-table">
+                        <tbody>
+                          <tr>
+                            <td style="font-weight: 500;">Email</td>
+                            <td id="patientEmail">
+
+                            </td>
+                            
+                          </tr>
+                          <tr>
+                            <td style="font-weight: 500;">Phone no.</td>
+                            <td id="patientPhoneNo">
+
+                            </td>
+                            
+                          </tr>
+                          <tr>
+                            <td style="font-weight: 500;">Name</td>
+                            <td id="patientName">
+
+                            </td>
+                            
+                          </tr>
+                          <tr>
+                            <td style="font-weight: 500;">Gender</td>
+                            <td id="patientGender">
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="font-weight: 500;">Date of birth</td>
+                            <td id="patientDOB">
+
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div role="tabpanel" class="tab-pane" id="medical-reports">
+                <table class="table" id="medical-reports-table">
+                  
+                </table>
+              </div>
+            </div>
+          
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal for to add doctor -->
   <div class="modal" id="add-doctor-modal" tabindex="-1" role="dialog" aria-labelledby="add-doctor" aria-hidden="true">
@@ -270,7 +403,7 @@
             <span data-toggle="popover" id="record-id" title="RECORD ID" class="close material-icons"
               style="color: rgb(255, 153, 0);">
               info
-            </span>
+            </span></button>
         </div>
         <div class="modal-body">
 

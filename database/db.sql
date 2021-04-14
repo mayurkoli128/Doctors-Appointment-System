@@ -72,6 +72,18 @@ CREATE TABLE APPOINTMENT (
 );
 DESCRIBE APPOINTMENT;
 
+CREATE TABLE MedicalHistory (
+    id	int8 AUTO_INCREMENT,
+	fileName VARCHAR(566) UNIQUE not null,
+	path VARCHAR(255) not null,
+	appointmentId	int8 NOT NULL,
+	patientId int8 NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(appointmentId) REFERENCES APPOINTMENT(id),
+    FOREIGN KEY(patientId) REFERENCES PATIENT(id)
+);
+DESCRIBE MedicalHistory;
+
 CREATE TABLE ADMIN (
     id	int8 AUTO_INCREMENT,
 	username	VARCHAR(255) NOT NULL,

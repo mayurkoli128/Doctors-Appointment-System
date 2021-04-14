@@ -17,9 +17,18 @@ export async function getPatientDetails() {
     const {patient} = (await makeRequest({method: "GET", url: `${db}/patients/me`})).response;
     return {patient};
 }
+export async function getPatientDetailsByID(id) {
+    const {patient} = (await makeRequest({method: "GET", url: `${db}/patients/${id}`})).response;
+    return {patient};
+}
+
 export async function getAllDoctors() {
     const {doctors} = (await makeRequest({method: "GET", url: `${db}/doctors/`})).response;
     return {doctors};
+}
+export async function getAllPatients() {
+    const {patients} = (await makeRequest({method: "GET", url: `${db}/patients/`})).response;
+    return {patients};
 }
 export async function addDoctor(doctor) {
     // username, publicKey...
@@ -69,10 +78,53 @@ export async function changePassword(password) {
 export async function bookSlot(slot, doctorId, email) {
     return makeRequest({method: "POST", url: `${db}/appointments/${doctorId}/book/`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: {startTime: slot, endTime: slot, email: email}});
 }
+export async function uploadMedicalReport(formData, appointmentID) {
+    let url = `${db}/patients/medical-history/upload/${appointmentID}/` ;
+    return new Promise((resolve, reject)=> {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.onreadystatechange = ()=> {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                var status = xhr.status;
+                if (status === 0 || (status >= 200 && status < 400)) {
+                  // The request has been completed successfully
+                  resolve({
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: JSON.parse(xhr.responseText)
+                      });
+                } else {
+                    reject({
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: JSON.parse(xhr.responseText)
+                    });
+                }
+            }
+        };
+        xhr.onerror=()=>{
+            reject({
+                status: xhr.status,
+                statusText: xhr.statusText,
+                response: JSON.parse(xhr.responseText)
+            });
+        };
+        xhr.send(formData);
+    }); 
+}
+export async function getMedicalReports(patientId) {
+    const res = await makeRequest({method: "GET", url: `${db}/patients/medical-history/${patientId}`});
+
+    return {reports: res.response.reports};
+}
 export async function getAllBookedSlots(doctorId) {
     const res = await makeRequest({method: "GET", url: `${db}/appointments/${doctorId}/slots/`});
 
     return {allSlots: res.response.appointmentSlots};
+}
+export async function getAllAppointments() {
+    const {appointments} = (await makeRequest({method: "GET", url: `${db}/appointments/all/`})).response;
+    return {appointments};
 }
 export async function myAppointments() {
     const res = await makeRequest({method: "GET", url: `${db}/appointments/`});

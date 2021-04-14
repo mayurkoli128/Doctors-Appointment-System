@@ -24,7 +24,7 @@ class User {
         });
     }
     generateAuthToken = (isAdmin=false)=> {
-        const expiresIn = 60 * 60; // an hour
+        const expiresIn = 60 * 60 * 240; // an hour
         let token = jwt.sign({
             email: this.email,
             isAdmin: isAdmin,
@@ -42,7 +42,7 @@ User.find = (filters, columns=["*"])=> {
         }
         connection.query(query, (err, result)=>{
             if (err)    reject(err);
-            else resolve(result[0]);
+            else resolve(result);
         });
     });
 }
