@@ -38,13 +38,15 @@ let insertForm = document.getElementById('add-doctor');
 insertForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
 	let e = insertForm.elements;
+	let gender = "Male";
+	if (e[6].checked) gender = "Female";
 	let doctor = {
 		firstName: e[0].value,
 		lastName: e[1].value,
 		qualification: e[2].value,
 		specialization: e[3].value,
 		email: e[4].value,
-		gender: e[5].value,
+		gender: gender,
 		phoneNo: e[7].value,
 		intro: e[8].value,
         avatar: getRandomColor(),
@@ -91,6 +93,8 @@ let rwForm = document.getElementById('update-doctor');
 rwForm.addEventListener('submit', async (event) => {
 	event.preventDefault();
 	let e = rwForm.elements;
+	let gender = "Male";
+	if (e[6].checked) gender = "Female";
 	let doctor = {
 		firstName: e[0].value  ,
 		lastName: e[1].value  ,
@@ -98,6 +102,7 @@ rwForm.addEventListener('submit', async (event) => {
 		specialization: e[3].value  ,
 		email: e[4].value,
 		phoneNo: e[7].value ,
+		gender: gender,
 		intro: e[8].value ,
 	};
 	let doctorId = document.getElementById('record-id').getAttribute('data-content');
@@ -151,6 +156,10 @@ window.getDoctorDetails = async function (id, toUpdate=false) {
 					<tr>
 						<th>LAST NAME : </th>
 						<td>${doctor.lastName}</td>
+					</tr>
+					<tr>
+						<th>GENDER : </th>
+						<td>${doctor.gender}</td>
 					</tr>
 					<tr>
 						<th>QUALIFICATION : </th>
