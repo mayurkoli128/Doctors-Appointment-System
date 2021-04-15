@@ -50,7 +50,7 @@ window.myMedicalHistory = async function() {
 					<th scope="col">VIEW REPORT</th>
 				</tr>`;
 		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
-		person
+		history
 		</span> Medical history`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;

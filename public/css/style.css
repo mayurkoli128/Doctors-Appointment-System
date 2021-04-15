@@ -1,3 +1,7 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+    font-size: small;
+}
 .block {
     min-height: 400px;
     margin: 10px;
