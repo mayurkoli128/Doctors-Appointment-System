@@ -18,7 +18,16 @@ module.exports = async function confirmationMail(doctor, patient, appointment) {
         to: patient.email, // list of receivers
         subject: "APPOINTMENT STATUS", // Subject line
         text: "Hello world?", // plain text body
-        html: `<strong>Dear ${patient.firstName+' '+patient.lastName}</strong><br><br>Your appointment has booked successfully with ${doctor.firstName+' '+doctor.lastName} ,${doctor.qualification} at ${appointment.startTime}.<br><br>Thanks You,`, // html body
+        html: `<strong>Dear ${patient.firstName+' '+patient.lastName}</strong><br><br>Your appointment has booked successfully with ${doctor.firstName+' '+doctor.lastName} ,${doctor.qualification} at ${appointment.startTime}.<br><br>
+        <h1>Our Address</h1>
+
+        <address>
+            Visit us at:<br>
+            Example.com<br>
+            Box 564, Disneyland<br>
+            Contact us at <a href="#" style="cursor: pointer;">hello@xyzHospital.com</a>.<br> 
+        </address>
+        <br>Thanks You,`, // html body
     });
 
     console.log("Message sent: %s", info.messageId);

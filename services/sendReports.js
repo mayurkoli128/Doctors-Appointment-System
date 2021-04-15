@@ -24,7 +24,7 @@ module.exports = async function sendReports (doctor, patient, reports) {
     return transporter.sendMail({
         from: `"XYZ Hospital" <${process.env.EMAIL}>`, // sender address
         to: doctor.email, // list of receivers
-        subject: "", // Subject line
+        subject: "PATIENT REPORT", // Subject line
         text: "Hello world?", // plain text body
         attachments: patientReports,
         html: `<strong>Dear ${doctor.firstName+' '+doctor.lastName}</strong><br><br>Medical History of  ${patient.firstName+' '+patient.lastName}. <br><br>

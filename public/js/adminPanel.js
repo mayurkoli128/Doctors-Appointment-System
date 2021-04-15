@@ -14,7 +14,6 @@ import {
 
 import {show} from '../partials/messages.js';
 
-
 // upload report documents...
 let uploadReport = document.getElementById('patient-report-form');
 uploadReport.addEventListener('submit', async (event)=> {
@@ -215,7 +214,9 @@ window.editDetails = async function () {
 					<th scope="col">DOCTOR NAME</th>
 					<th scope="col">LAST MODIFIED</th>
 				</tr>`;
-
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		edit
+		</span> Edit details`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;
 
@@ -278,11 +279,13 @@ window.viewAppointmentDetails = async function() {
 					<th scope="col">DOCTOR ID</th>
 					<th scope="col">DOCTOR NAME</th>
 					<th scope="col">SPECIALIZATION</th>
-					<th scope="col">SEND DETAILS TO DOCTOR</th>
+					<th scope="col">SEND REPORTS TO DOCTOR</th>
 					<th scope="col">UPLOAD REPORT</th>
 					
 				</tr>`;
-
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		event
+		</span> View appointments`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;
 	} catch (error) {
@@ -357,7 +360,9 @@ window.viewPatientDetails = async function () {
 					<th scope="col">EMAIL</th>
 					<th scope="col">MEDICAL REPORTS</th>
 				</tr>`;
-
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		person
+		</span> View patients`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;
 
@@ -391,9 +396,11 @@ window.viewDoctors = async function() {
 					<th scope="col"></th>
 					<th scope="col">AVATAR</th>
 					<th scope="col">DOCTOR NAME</th>
-					<th scope="col">LAST MODIFIED</th>
+					<th scope="col">SPECIALIZATION</th>
 				</tr>`;
-
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		person
+		</span> View doctors`;
 		const tbody = document.getElementById('current-details');
 		tbody.innerHTML = all;
 	} catch (error) {

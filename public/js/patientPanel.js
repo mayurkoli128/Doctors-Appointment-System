@@ -6,6 +6,7 @@ import {
 	myAppointments,
 	getPatientDetails,
 	updatePatientDetails,
+	myMedicalHistory
 } from '../API/server.js';
 import {show} from '../partials/messages.js';
 
@@ -27,6 +28,39 @@ confirmEmail.addEventListener('submit', async (event)=> {
 		console.log(error);
 	}
 });
+// view my appointment...
+window.myMedicalHistory = async function() {
+	try {
+		const {reports} = await myMedicalHistory();
+		let all = "";
+		for (let i = 0; i < reports.length; i++) {
+			all += `<tr class="table-row">
+                <td>${reports[i].doctor.firstName + " "+ reports[i].doctor.lastName }</td>
+                <td>${reports[i].doctor.qualification}</td>
+                <td>${reports[i].doctor.email}</td>
+                <td>${reports[i].createdDate}</td>
+                <td><a href="uploads/${reports[i].fileName}" class="btn btn-info" target="_blank">click here</a>
+			</tr>`;
+		}
+		document.getElementById('col-names').innerHTML = `<tr>
+					<th scope="col">DOCTOR NAME</th>
+					<th scope="col">DOCTOR QUALIFICATION</th>
+					<th scope="col">DOCTOR EMAIL</th>
+					<th scope="col">DATE OF APPOINTMENT</th>
+					<th scope="col">FILENAME</th>
+				</tr>`;
+		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
+		person
+		</span> Medical history`;
+		const tbody = document.getElementById('current-details');
+		tbody.innerHTML = all;
+
+	} catch (error) {
+		// ohh no! something went wrong....
+		show(error.response.message, "danger", "confirm-booking-msg");
+		console.log(error);
+	}
+}
 // when user click on any slot....
 window.confirmSlot = async function(par) {
 	try {

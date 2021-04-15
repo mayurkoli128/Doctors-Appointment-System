@@ -5,5 +5,5 @@ export function show(message, type, id) {
     e.style.display = "block";
     setTimeout(() => {
       e.style.display = "none";
-    }, 7*1000);
+    }, 15*1000);
   }

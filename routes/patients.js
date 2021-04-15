@@ -64,6 +64,19 @@ router.get('/', [adminAuth], async (req, res)=> {
 // @route   /api/secret/mine
 // @desc    route for user to show his all secrets(page render)
 // @access  PRIVATE 
+router.get('/medical-history/mine/', [auth], async (req, res)=> {
+    const patient = req.patient;
+    const reports = await MedicalHistory.find({"MEDICAL_HISTORY.patientId": patient.id}, ["MEDICAL_HISTORY.id", "MEDICAL_HISTORY.fileName", "MEDICAL_HISTORY.path", "APPOINTMENT.doctorId AS doctorId",  "APPOINTMENT.createdDate", "APPOINTMENT.startTime"]);
+    for (i=0; i<reports.length; ++i) {
+        const doctor = (await Doctor.find({id: reports[i].doctorId}))[0];
+        reports[i].doctor = doctor;
+    }
+    res.status(200).json({ok: true, reports: reports});
+});
+// @type    GET
+// @route   /api/secret/mine
+// @desc    route for user to show his all secrets(page render)
+// @access  PRIVATE 
 router.get('/medical-history/send/:from/:to', [adminAuth], async (req, res)=> {
     const doctor = await Doctor.find({id: req.params.from});
     const patient = await Patient.find({id: req.params.to}, ["firstName", "lastName", "email", "gender"]);

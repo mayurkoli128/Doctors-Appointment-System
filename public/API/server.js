@@ -60,6 +60,10 @@ export async function updateDoctorDetails(doctor, doctorId) {
     }
     return makeRequest({method: "PATCH", url: `${db}/doctors/${doctorId}/`, headers: {"Content-Type": "application/json;charset=UTF-8"}, data: data});
 }
+export async function  myMedicalHistory() {
+    const {reports} = (await makeRequest({method: "GET", url: `${db}/patients/medical-history/mine/`})).response;
+    return {reports};
+}
 export async function updatePatientDetails(patient) {
     // username, publicKey...
     const data = {
