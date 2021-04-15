@@ -312,7 +312,7 @@ window.medicalHistory = async function(id) {
 			<th scope="col">REPORT ID</th>
 			<th scope="col">DOCTOR ID</th>
 			<th scope="col">FILENAME</th>
-			<th scope="col">CREATED DATE</th>
+			<th scope="col">DATE OF APPOINTMENT</th>
 			<th scope="col">VIEW REPORT</th>
 			</tr>
 		</thead>`;
