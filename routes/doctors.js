@@ -64,6 +64,7 @@ router.patch('/:doctorId/', [adminAuth], async (req, res)=> {
     doctor = new Doctor(
         _.pick(req.body, ["firstName", "lastName", "gender", "qualification", "phoneNo", "specialization", "email", "intro", "avatar"])
     );
+    doctor.createdDate = new Date().toString();
     Object.entries(doctor).forEach(([key, value]) => {
         if (typeof value === 'undefined')   delete doctor[key];
     });

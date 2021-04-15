@@ -47,7 +47,7 @@ window.myMedicalHistory = async function() {
 					<th scope="col">DOCTOR QUALIFICATION</th>
 					<th scope="col">DOCTOR EMAIL</th>
 					<th scope="col">DATE OF APPOINTMENT</th>
-					<th scope="col">FILENAME</th>
+					<th scope="col">VIEW REPORT</th>
 				</tr>`;
 		document.getElementById('main-dashboard-head').innerHTML = `<span class="material-icons" style="vertical-align: bottom; font-size: 25px;">
 		person
