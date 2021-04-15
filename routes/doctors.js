@@ -9,7 +9,7 @@ const _ = require('lodash');
 // @desc    route for user to show his all secrets(page render)
 // @access  PRIVATE 
 router.get('/', async (req, res)=> {
-    const doctors = await Doctor.find({1: 1}, ["id", "firstName", "lastName", "gender", "qualification", "phoneNo", "specialization", "email", "intro", "avatar"]);
+    const doctors = await Doctor.find({1: 1}, ["id", "firstName", "lastName", "gender", "qualification", "phoneNo", "specialization", "email", "intro", "avatar", "createdDate"]);
     res.status(200).json({ok: true, message: 'Success', doctors:doctors});
 });
 

@@ -193,7 +193,7 @@ window.editDetails = async function () {
 		let {doctors} = await getAllDoctors();
 		let all = "";
 		for (let i = 0; i < doctors.length; i++) {
-			doctors[i].lastModifiedAt = timeSince(Date.now());
+			doctors[i].createdDate = timeSince(new Date(doctors[i].createdDate));
 			all += `<tr class="table-row">
                 <td> 
                 <span class="material-icons" style="vertical-align: bottom;">person</span>
@@ -203,7 +203,7 @@ window.editDetails = async function () {
 					${doctors[i].firstName + " " + doctors[i].lastName}
 				</td>
 
-				<td>${doctors[i].lastModifiedAt}</td>
+				<td>${doctors[i].createdDate}</td>
 
                 <td  style="cursor: pointer;">
                   <div class="btn-group">
